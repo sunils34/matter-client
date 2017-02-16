@@ -1,0 +1,19 @@
+FROM node:6-slim
+
+ENV KARMA_BROWSER PhantomJS
+RUN apt-get update && apt-get install libpng12-0
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+RUN npm install -g yarn
+
+ADD package.json package.json
+ADD . .
+RUN npm run setup
+RUN npm run build:dll
+
+VOLUME /usr/src/app
+
+ENV PORT 80
+EXPOSE 80
